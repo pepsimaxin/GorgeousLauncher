@@ -1,0 +1,158 @@
+allprojects {
+    repositories {
+        maven { url "../../../prebuilts/sdk/current/androidx/m2repository" }
+        maven { url "../../../prebuilts/fullsdk-darwin/extras/android/m2repository" }
+        maven { url "../../../prebuilts/fullsdk-linux/extras/android/m2repository" }
+        mavenCentral()
+        google()
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.9.4'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.protobuf'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdk 34
+
+    defaultConfig {
+        minSdkVersion 33
+
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    // The flavor dimensions for build variants (e.g. aospWithQuickstep, aospWithoutQuickstep)
+    // See: https://developer.android.com/studio/build/build-variants#flavor-dimensions
+    flavorDimensions "app", "recents"
+
+    productFlavors {
+        aosp {
+            dimension "app"
+            applicationId 'com.android.launcher3'
+        }
+
+        withQuickstep {
+            dimension "recents"
+            minSdkVersion 33
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+        }
+        release {
+            minifyEnabled false
+        }
+    }
+
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    'res',
+                    'iconloaderlib/res',
+                    'SystemUIAnimationLib/res'
+            ]
+
+            java.srcDirs = [
+                    'src',
+                    'src_plugins',
+                    'iconloaderlib/src',
+                    'iconloaderlib/src_full_lib',
+                    'animationlib/src',
+                    'tests/shared',
+                    'SystemUIAimationLib/src',
+                    'viewcapturelib/src',
+                    'src_shortcuts_overrides',
+                    'src_build_config'
+            ]
+
+            manifest.srcFile 'AndroidManifest-common.xml'
+
+            proto {
+                srcDirs = [
+                        'protos/',
+                        'quickstep/protos_overrides/',
+                        'viewcapturelib/src/com/android/app/viewcapture/proto'
+                ]
+            }
+        }
+
+        aospWithQuickstep {
+            manifest.srcFile "quickstep/AndroidManifest-launcher.xml"
+        }
+
+        withQuickstep {
+            res.srcDirs = ['quickstep/res', 'quickstep/recents_ui_overrides/res']
+            java.srcDirs = ['quickstep/src', 'quickstep/recents_ui_overrides/src']
+            manifest.srcFile "quickstep/AndroidManifest.xml"
+        }
+    }
+
+    kotlin {
+        jvmToolchain(17)
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+        freeCompilerArgs = ["-Xjvm-default=all"]
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ['*.jar', '*.aar'])
+
+    implementation 'com.google.protobuf:protobuf-javalite:3.22.3'
+
+    implementation "com.google.android.material:material:${ANDROID_X_VERSION}"
+    implementation "androidx.dynamicanimation:dynamicanimation:${ANDROID_X_VERSION}"
+    implementation "androidx.preference:preference-ktx:${ANDROID_X_VERSION}"
+    implementation "androidx.slice:slice-core:${ANDROID_X_VERSION}"
+    implementation "androidx.slice:slice-builders:${ANDROID_X_VERSION}"
+
+    // noinspection GradleDependency
+    implementation "androidx.recyclerview:recyclerview:1.4.0-alpha01"
+    //noinspection GradleDependency
+    implementation 'androidx.core:core-animation:1.0.0-rc01'
+
+    api 'com.airbnb.android:lottie:6.3.0'
+}
+
+protobuf {
+    // Configure the protoc executable
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.22.3"
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                remove java
+                java {
+                    option "lite"
+                }
+            }
+        }
+    }
+}
