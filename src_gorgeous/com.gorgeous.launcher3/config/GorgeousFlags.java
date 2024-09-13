@@ -38,7 +38,7 @@ public final class GorgeousFlags {
     /**
      * Marco: Single-layer Launcher
      */
-    public static boolean GORGEOUS_ENABLE_SINGLE_PAGE(Context context) {
+    public static boolean ENABLE_SINGLE_LAYER(Context context) {
         // 保留逻辑
         // return Settings.System.getInt(context.getContentResolver(), "launcher_style", 0) == 1;
         return true;

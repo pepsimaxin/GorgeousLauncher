@@ -100,6 +100,8 @@ import com.android.launcher3.util.TraceHelper;
 import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.widget.WidgetManagerHelper;
 
+import com.gorgeous.launcher3.config.GorgeousFlags;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -243,6 +245,11 @@ public class LoaderTask implements Runnable {
                 Trace.endSection();
             }
             logASplit("loadAllApps");
+
+            // Marco: Single-layer Launcher
+            if (GorgeousFlags.ENABLE_SINGLE_LAYER(mApp.getContext())) {
+                // loadAllAppsToWorkspace();
+            }
 
             if (FeatureFlags.CHANGE_MODEL_DELEGATE_LOADING_ORDER.get()) {
                 mModelDelegate.loadAndBindAllAppsItems(mUserManagerState,

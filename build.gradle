@@ -79,6 +79,7 @@ android {
             java.srcDirs = [
                     'src',
                     'src_plugins',
+                    'src_gorgeous',
                     'iconloaderlib/src',
                     'iconloaderlib/src_full_lib',
                     'animationlib/src',
