@@ -40,6 +40,7 @@ import com.android.launcher3.pm.InstallSessionHelper;
 import com.android.launcher3.pm.PackageInstallInfo;
 import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.PackageManagerHelper;
+import com.gorgeous.launcher3.config.GorgeousFlags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +101,9 @@ public class AddWorkspaceItemsTask extends BaseModelUpdateTask {
 
                     // b/139663018 Short-circuit this logic if the icon is a system app
                     if (PackageManagerHelper.isSystemApp(app.getContext(),
-                            Objects.requireNonNull(item.getIntent()))) {
+                            Objects.requireNonNull(item.getIntent()))
+                            // Marco: Single-layer Launcher, don't filter system app
+                            && !GorgeousFlags.ENABLE_SINGLE_LAYER(app.getContext())) {
                         continue;
                     }
                 }

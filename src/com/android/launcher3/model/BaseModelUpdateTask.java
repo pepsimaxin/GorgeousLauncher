@@ -37,6 +37,7 @@ import com.android.launcher3.testing.shared.TestProtocol;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.widget.model.WidgetsListBaseEntry;
+import com.gorgeous.launcher3.config.GorgeousFlags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,6 +84,10 @@ public abstract class BaseModelUpdateTask implements ModelUpdateTask {
                 Log.d(TAG, "Ignoring model task since loader is pending=" + this);
             }
             // Loader has not yet run.
+            // Marco: Single-layer Launcher
+            if (!GorgeousFlags.ENABLE_SINGLE_LAYER(mApp.getContext())) {
+                return;
+            }
             return;
         }
         execute(mApp, mDataModel, mAllAppsList);

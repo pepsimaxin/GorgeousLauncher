@@ -248,7 +248,7 @@ public class LoaderTask implements Runnable {
 
             // Marco: Single-layer Launcher
             if (GorgeousFlags.ENABLE_SINGLE_LAYER(mApp.getContext())) {
-                // loadAllAppsToWorkspace();
+                loadAllAppsToWorkspace();
             }
 
             if (FeatureFlags.CHANGE_MODEL_DELEGATE_LOADING_ORDER.get()) {
@@ -1116,6 +1116,20 @@ public class LoaderTask implements Runnable {
     private static void logASplit(String label) {
         if (DEBUG) {
             Log.d(TAG, label);
+        }
+    }
+
+
+    /**
+     * Marco: Single-layer Launcher, load all apps to workspace
+     */
+    private void loadAllAppsToWorkspace() {
+        final Context context = mApp.getContext();
+        AppInfo[] apps = mBgAllAppsList.copyData();
+        for (AppInfo info : apps) {
+            String packageName = info.getTargetComponent().getPackageName();
+            ItemInstallQueue.INSTANCE.get(context).queueItem(
+                    packageName, info.user);
         }
     }
 }
