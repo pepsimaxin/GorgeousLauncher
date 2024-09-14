@@ -71,6 +71,7 @@ import com.android.launcher3.util.IntArray;
 import com.android.launcher3.util.MainThreadInitializedObject.SandboxContext;
 import com.android.launcher3.util.Partner;
 import com.android.launcher3.widget.LauncherWidgetHolder;
+import com.gorgeous.launcher3.util.LogUtils;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -374,13 +375,16 @@ public class ModelDbController {
 
         if (LauncherPrefs.get(mContext).get(getEmptyDbCreatedKey(mOpenHelper.getDatabaseName()))) {
             Log.d(TAG, "loading default workspace");
+            LogUtils.d(TAG, "@@@ Marco >>> loading default workspace");
 
             LauncherWidgetHolder widgetHolder = mOpenHelper.newLauncherWidgetHolder();
             try {
                 AutoInstallsLayout loader = createWorkspaceLoaderFromAppRestriction(widgetHolder);
+                LogUtils.i(TAG, "@@@ Marco >>> loader_01 = " + loader);
                 if (loader == null) {
                     loader = AutoInstallsLayout.get(mContext, widgetHolder, mOpenHelper);
                 }
+                LogUtils.i(TAG, "@@@ Marco >>> loader_02 = " + loader);
                 if (loader == null) {
                     final Partner partner = Partner.get(mContext.getPackageManager());
                     if (partner != null) {
@@ -393,7 +397,9 @@ public class ModelDbController {
                 }
 
                 final boolean usingExternallyProvidedLayout = loader != null;
+                LogUtils.i(TAG, "@@@ Marco >>> loader_03 = " + loader);
                 if (loader == null) {
+                    LogUtils.i(TAG, "@@@ Marco >>> getDefaultLayoutParser(), start ...");
                     loader = getDefaultLayoutParser(widgetHolder);
                 }
 
