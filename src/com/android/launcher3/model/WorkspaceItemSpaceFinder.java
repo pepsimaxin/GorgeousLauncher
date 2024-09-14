@@ -70,7 +70,9 @@ public class WorkspaceItemSpaceFinder {
             screensToExclude.add(FIRST_SCREEN_ID);
         }
 
-        for (int screen = 0; screen < screenCount; screen++) {
+        // for (int screen = 0; screen < screenCount; screen++) {
+        // Marco: By default, icons are placed starting from the second page
+        for (int screen = 1; screen < screenCount; screen++) {
             screenId = workspaceScreens.get(screen);
             if (!screensToExclude.contains(screenId) && findNextAvailableIconSpaceInScreen(
                     app, screenItems.get(screenId), coordinates, spanX, spanY)) {
