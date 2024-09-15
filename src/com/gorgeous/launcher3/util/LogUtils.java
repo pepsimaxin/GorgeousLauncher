@@ -11,7 +11,7 @@ import android.util.Log;
  */
 public class LogUtils {
     private static final String APP_TAG = "Gorgeous_Launcher";
-    private static final String SPIT = "===> ";
+    private static final String SPIT = " ===> ";
 
     /**
      * 定义全局的标志
@@ -20,55 +20,55 @@ public class LogUtils {
 
     public static void i(String tag, String msg) {
         if (mIsOpen) {
-            Log.i(APP_TAG, "[ " + tag + " ]" + " 日志输出：" + SPIT + msg);
+            Log.i(APP_TAG, "[ " + tag + " ]" + SPIT + msg);
         }
     }
 
     public static void i(String tag, String msg, Throwable e) {
         if (mIsOpen) {
-            Log.i(APP_TAG, "[ " + tag + " ]" + " 日志输出：" + SPIT + msg, e);
+            Log.i(APP_TAG, "[ " + tag + " ]" + SPIT + msg, e);
         }
     }
 
     public static void w(String tag, String msg) {
         if (mIsOpen) {
-            Log.w(APP_TAG, "[ " + tag + " ]" + " 日志输出：" + SPIT + msg);
+            Log.w(APP_TAG, "[ " + tag + " ]" + SPIT + msg);
         }
     }
 
     public static void w(String tag, String msg, Throwable e) {
         if (mIsOpen) {
-            Log.w(APP_TAG, "[ " + tag + " ]" + " 日志输出：" + SPIT + msg, e);
+            Log.w(APP_TAG, "[ " + tag + " ]" + SPIT + msg, e);
         }
     }
 
     public static void e(String tag, String msg) {
         if (mIsOpen) {
-            Log.e(APP_TAG, "[ " + tag + " ]" + " 日志输出：" + SPIT + msg);
+            Log.e(APP_TAG, "[ " + tag + " ]" + SPIT + msg);
         }
     }
 
     public static void e(String tag, String msg, Throwable e) {
         if (mIsOpen) {
-            Log.e(APP_TAG, "[ " + tag + " ]" + " 日志输出：" + SPIT + msg, e);
+            Log.e(APP_TAG, "[ " + tag + " ]" + SPIT + msg, e);
         }
     }
 
     public static void d(String tag, String msg) {
         if (mIsOpen) {
-            Log.d(APP_TAG, "[ " + tag + " ]" + " 日志输出：" + SPIT + msg);
+            Log.d(APP_TAG, "[ " + tag + " ]" + SPIT + msg);
         }
     }
 
     public static void d(String tag, String msg, Throwable e) {
         if (mIsOpen) {
-            Log.d(APP_TAG, "[ " + tag + " ]" + " 日志输出：" + SPIT + msg, e);
+            Log.d(APP_TAG, "[ " + tag + " ]" + SPIT + msg, e);
         }
     }
 
     public static void v(String tag, String msg) {
         if (mIsOpen) {
-            Log.v(APP_TAG, "[ " + tag + " ]" + " 日志输出：" + SPIT + msg);
+            Log.v(APP_TAG, "[ " + tag + " ]" + SPIT + msg);
         }
     }
 }

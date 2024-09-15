@@ -74,6 +74,7 @@ import com.android.launcher3.util.IntSet;
 import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.Preconditions;
+import com.gorgeous.launcher3.util.LogUtils;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -93,7 +94,7 @@ import java.util.function.Supplier;
 public class LauncherModel extends LauncherApps.Callback implements InstallSessionTracker.Callback {
     private static final boolean DEBUG_RECEIVER = false;
 
-    static final String TAG = "Launcher.Model";
+    static final String TAG = "Launcher.Model          ";
 
     // Broadcast intent to track when the profile gets locked:
     // ACTION_MANAGED_PROFILE_UNAVAILABLE can be used until Android U where profile no longer gets
@@ -407,6 +408,7 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
     }
 
     private boolean startLoader(@NonNull final Callbacks[] newCallbacks) {
+        LogUtils.i(TAG, "startLoader()");
         // Enable queue before starting loader. It will get disabled in Launcher#finishBindingItems
         ItemInstallQueue.INSTANCE.get(mApp.getContext())
                 .pauseModelPush(ItemInstallQueue.FLAG_LOADER_RUNNING);
@@ -426,6 +428,7 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
                 LauncherBinder launcherBinder = new LauncherBinder(
                         mApp, mBgDataModel, mBgAllAppsList, callbacksList);
                 if (bindDirectly) {
+                    LogUtils.i(TAG, "startLoader() -- 非首次启动, launcherBinder.bindXXX()");
                     // Divide the set of loaded items into those that we are binding synchronously,
                     // and everything else that is to be bound normally (asynchronously).
                     launcherBinder.bindWorkspace(bindAllCallbacks, /* isBindSync= */ true);
@@ -439,6 +442,7 @@ public class LauncherModel extends LauncherApps.Callback implements InstallSessi
                     }
                     return true;
                 } else {
+                    LogUtils.i(TAG, "startLoader() -- 首次启动, start LoaderTask ...");
                     stopLoader();
                     mLoaderTask = new LoaderTask(
                             mApp, mBgAllAppsList, mBgDataModel, mModelDelegate, launcherBinder);

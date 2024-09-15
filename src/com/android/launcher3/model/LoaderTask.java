@@ -100,6 +100,7 @@ import com.android.launcher3.util.TraceHelper;
 import com.android.launcher3.widget.LauncherAppWidgetProviderInfo;
 import com.android.launcher3.widget.WidgetManagerHelper;
 import com.gorgeous.launcher3.config.GorgeousFlags;
+import com.gorgeous.launcher3.util.LogUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,7 +119,7 @@ import java.util.concurrent.CancellationException;
  * - deep shortcuts within apps
  */
 public class LoaderTask implements Runnable {
-    private static final String TAG = "LoaderTask";
+    private static final String TAG = "LoaderTask              ";
 
     private static final boolean DEBUG = true;
 
@@ -197,6 +198,7 @@ public class LoaderTask implements Runnable {
     }
 
     public void run() {
+        LogUtils.i(TAG, "LoaderTask.run() ...");
         synchronized (this) {
             // Skip fast if we are already stopped.
             if (mStopped) {
@@ -367,6 +369,7 @@ public class LoaderTask implements Runnable {
             List<ShortcutInfo> allDeepShortcuts,
             String selection,
             @Nullable LoaderMemoryLogger memoryLogger) {
+        LogUtils.d(TAG, "loadWorkspaceImpl()");
         final Context context = mApp.getContext();
         final ContentResolver contentResolver = context.getContentResolver();
         final PackageManagerHelper pmHelper = new PackageManagerHelper(context);

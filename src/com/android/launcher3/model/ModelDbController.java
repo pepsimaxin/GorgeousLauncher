@@ -83,7 +83,7 @@ import java.io.StringReader;
  * around it.
  */
 public class ModelDbController {
-    private static final String TAG = "LauncherProvider";
+    private static final String TAG = "ModelDbController       ";
 
     private static final String EMPTY_DATABASE_CREATED = "EMPTY_DATABASE_CREATED";
 
@@ -371,20 +371,21 @@ public class ModelDbController {
      */
     @WorkerThread
     public synchronized void loadDefaultFavoritesIfNecessary() {
+        LogUtils.d(TAG, "loadDefaultFavoritesIfNecessary()");
         createDbIfNotExists();
 
         if (LauncherPrefs.get(mContext).get(getEmptyDbCreatedKey(mOpenHelper.getDatabaseName()))) {
             Log.d(TAG, "loading default workspace");
-            LogUtils.d(TAG, "@@@ Marco >>> loading default workspace");
+            LogUtils.d(TAG, "loading default workspace");
 
             LauncherWidgetHolder widgetHolder = mOpenHelper.newLauncherWidgetHolder();
             try {
                 AutoInstallsLayout loader = createWorkspaceLoaderFromAppRestriction(widgetHolder);
-                LogUtils.i(TAG, "@@@ Marco >>> loader_01 = " + loader);
+                LogUtils.i(TAG, "loader_01 = " + loader);
                 if (loader == null) {
                     loader = AutoInstallsLayout.get(mContext, widgetHolder, mOpenHelper);
                 }
-                LogUtils.i(TAG, "@@@ Marco >>> loader_02 = " + loader);
+                LogUtils.i(TAG, "loader_02 = " + loader);
                 if (loader == null) {
                     final Partner partner = Partner.get(mContext.getPackageManager());
                     if (partner != null) {
@@ -397,9 +398,9 @@ public class ModelDbController {
                 }
 
                 final boolean usingExternallyProvidedLayout = loader != null;
-                LogUtils.i(TAG, "@@@ Marco >>> loader_03 = " + loader);
+                LogUtils.i(TAG, "loader_03 = " + loader);
                 if (loader == null) {
-                    LogUtils.i(TAG, "@@@ Marco >>> getDefaultLayoutParser(), start ...");
+                    LogUtils.i(TAG, "getDefaultLayoutParser(), start ...");
                     loader = getDefaultLayoutParser(widgetHolder);
                 }
 
