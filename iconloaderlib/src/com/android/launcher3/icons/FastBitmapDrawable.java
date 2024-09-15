@@ -21,6 +21,7 @@ import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
 
 import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -29,6 +30,8 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.util.FloatProperty;
 import android.view.animation.AccelerateInterpolator;
@@ -129,6 +132,18 @@ public class FastBitmapDrawable extends Drawable implements Drawable.Callback {
 
     protected void drawInternal(Canvas canvas, Rect bounds) {
         canvas.drawBitmap(mBitmap, null, bounds, mPaint);
+        // TODO: Marco ==> 初始化绘制纹理图
+//        BitmapShader bitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+//        Paint paint = new Paint();
+//        paint.setAntiAlias(true);
+//        paint.setDither(true);
+//        paint.setShader(bitmapShader);
+//        paint.setStrokeWidth(16);
+//        // 利用画笔将纹理图绘制到画布上面
+//        int mWidth = Math.min(mBitmap.getWidth(), mBitmap.getHeight());
+//        canvas.drawRoundRect(new RectF(8, 8, mWidth-8, mWidth-8), 40, 40, paint);
+//        //canvas.drawCircle(mWidth / 2, mWidth / 2, mWidth / 2, paint);
+//        //canvas.drawBitmap(mBitmap, null, bounds, mPaint);
     }
 
     /**
