@@ -239,6 +239,7 @@ import com.android.systemui.plugins.PluginListener;
 import com.android.systemui.plugins.shared.LauncherExterns;
 import com.android.systemui.plugins.shared.LauncherOverlayManager;
 import com.android.systemui.plugins.shared.LauncherOverlayManager.LauncherOverlay;
+import com.gorgeous.launcher3.OverlayCallbackImpl;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -662,8 +663,9 @@ public class Launcher extends StatefulActivity<LauncherState>
     }
 
     protected LauncherOverlayManager getDefaultOverlay() {
-        return new LauncherOverlayManager() {
-        };
+//        return new LauncherOverlayManager() {
+//        };
+        return new OverlayCallbackImpl(this);
     }
 
     protected OnboardingPrefs<? extends Launcher> createOnboardingPrefs(
