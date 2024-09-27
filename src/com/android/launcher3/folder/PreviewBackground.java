@@ -98,6 +98,9 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
     private ObjectAnimator mStrokeAlphaAnimator;
     private ObjectAnimator mShadowAnimator;
 
+    // Marco: Customize Folder Background;
+    private int mFolderBgColor;
+
     private static final Property<PreviewBackground, Integer> STROKE_ALPHA =
             new Property<PreviewBackground, Integer>(Integer.class, "strokeAlpha") {
                 @Override
@@ -166,6 +169,9 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
         // Stroke width is 1dp
         mStrokeWidth = context.getResources().getDisplayMetrics().density;
 
+        // Marco: Customize Folder Background Color
+        mFolderBgColor = context.getColor(R.color.folder_icon_background_color);
+
         if (DRAW_SHADOW) {
             float radius = getScaledRadius();
             float shadowRadius = radius + mStrokeWidth;
@@ -227,7 +233,7 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
     }
 
     public int getBgColor() {
-        return mBgColor;
+        return mFolderBgColor/*mBgColor*/;
     }
 
     public int getDotColor() {

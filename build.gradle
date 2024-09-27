@@ -90,6 +90,7 @@ android {
         main {
             res.srcDirs = [
                     'res',
+                    'res_gorgeous',
                     'iconloaderlib/res',
                     'SystemUIAnimationLib/res'
             ]
