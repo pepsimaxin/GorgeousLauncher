@@ -26,6 +26,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -60,27 +61,37 @@ import java.util.List;
 public abstract class IconShape {
 
     private static IconShape sInstance = new Circle();
+    private static IconShape fInstance = null;
+
     private static float sNormalizationScale = ICON_VISIBLE_AREA_FACTOR;
 
     public static IconShape getShape() {
         return sInstance;
     }
 
+    // Marco: 添加 folder 背景形状
+    public static IconShape getFolderShape(float radius) {
+        if (fInstance == null || fInstance instanceof BitmapShape) {
+            fInstance = new FolderShape(1, radius);
+        }
+        return fInstance;
+    }
+
     public static float getNormalizationScale() {
         return sNormalizationScale;
     }
 
-    public boolean enableShapeDetection(){
+    public boolean enableShapeDetection() {
         return false;
-    };
+    }
 
     public abstract void drawShape(Canvas canvas, float offsetX, float offsetY, float radius,
-            Paint paint);
+                                   Paint paint);
 
     public abstract void addToPath(Path path, float offsetX, float offsetY, float radius);
 
     public abstract <T extends View & ClipPathView> Animator createRevealAnimator(T target,
-            Rect startRect, Rect endRect, float endRadius, boolean isReversed);
+                                                                                  Rect startRect, Rect endRect, float endRadius, boolean isReversed);
 
     /**
      * Abstract shape where the reveal animation is a derivative of a round rect animation
@@ -89,7 +100,7 @@ public abstract class IconShape {
 
         @Override
         public final <T extends View & ClipPathView> Animator createRevealAnimator(T target,
-                Rect startRect, Rect endRect, float endRadius, boolean isReversed) {
+                                                                                   Rect startRect, Rect endRect, float endRadius, boolean isReversed) {
             return new RoundedRectRevealOutlineProvider(
                     getStartRadius(startRect), endRadius, startRect, endRect) {
                 @Override
@@ -111,7 +122,7 @@ public abstract class IconShape {
 
         @Override
         public final void drawShape(Canvas canvas, float offsetX, float offsetY, float radius,
-                Paint paint) {
+                                    Paint paint) {
             mTmpPath.reset();
             addToPath(mTmpPath, offsetX, offsetY, radius);
             canvas.drawPath(mTmpPath, paint);
@@ -122,7 +133,7 @@ public abstract class IconShape {
 
         @Override
         public final <T extends View & ClipPathView> Animator createRevealAnimator(T target,
-                Rect startRect, Rect endRect, float endRadius, boolean isReversed) {
+                                                                                   Rect startRect, Rect endRect, float endRadius, boolean isReversed) {
             Path path = new Path();
             AnimatorUpdateListener listener =
                     newUpdateListener(startRect, endRect, endRadius, path);
@@ -161,12 +172,12 @@ public abstract class IconShape {
         private final float[] mTempRadii = new float[8];
 
         protected AnimatorUpdateListener newUpdateListener(Rect startRect, Rect endRect,
-                float endRadius, Path outPath) {
+                                                           float endRadius, Path outPath) {
             float r1 = getStartRadius(startRect);
 
-            float[] startValues = new float[] {
+            float[] startValues = new float[]{
                     startRect.left, startRect.top, startRect.right, startRect.bottom, r1, r1};
-            float[] endValues = new float[] {
+            float[] endValues = new float[]{
                     endRect.left, endRect.top, endRect.right, endRect.bottom, endRadius, endRadius};
 
             FloatArrayEvaluator evaluator = new FloatArrayEvaluator(new float[6]);
@@ -181,7 +192,7 @@ public abstract class IconShape {
         }
 
         private float[] getRadiiArray(float r1, float r2) {
-            mTempRadii[0] = mTempRadii [1] = mTempRadii[2] = mTempRadii[3] =
+            mTempRadii[0] = mTempRadii[1] = mTempRadii[2] = mTempRadii[3] =
                     mTempRadii[6] = mTempRadii[7] = r1;
             mTempRadii[4] = mTempRadii[5] = r2;
             return mTempRadii;
@@ -260,7 +271,7 @@ public abstract class IconShape {
         }
 
         private float[] getRadiiArray(float r1, float r2) {
-            mTempRadii[0] = mTempRadii [1] = mTempRadii[2] = mTempRadii[3] =
+            mTempRadii[0] = mTempRadii[1] = mTempRadii[2] = mTempRadii[3] =
                     mTempRadii[6] = mTempRadii[7] = r1;
             mTempRadii[4] = mTempRadii[5] = r2;
             return mTempRadii;
@@ -268,13 +279,13 @@ public abstract class IconShape {
 
         @Override
         protected AnimatorUpdateListener newUpdateListener(Rect startRect, Rect endRect,
-                float endRadius, Path outPath) {
+                                                           float endRadius, Path outPath) {
             float r1 = startRect.width() / 2f;
             float r2 = r1 * mRadiusRatio;
 
-            float[] startValues = new float[] {
+            float[] startValues = new float[]{
                     startRect.left, startRect.top, startRect.right, startRect.bottom, r1, r2};
-            float[] endValues = new float[] {
+            float[] endValues = new float[]{
                     endRect.left, endRect.top, endRect.right, endRect.bottom, endRadius, endRadius};
 
             FloatArrayEvaluator evaluator = new FloatArrayEvaluator(new float[6]);
@@ -330,7 +341,7 @@ public abstract class IconShape {
 
         @Override
         protected AnimatorUpdateListener newUpdateListener(Rect startRect, Rect endRect,
-                float endR, Path outPath) {
+                                                           float endR, Path outPath) {
 
             float startCX = startRect.exactCenterX();
             float startCY = startRect.exactCenterY();
@@ -405,10 +416,10 @@ public abstract class IconShape {
             int type;
             while ((type = parser.next()) != XmlPullParser.END_TAG
                     && type != XmlPullParser.END_DOCUMENT
-                    && !"shapes".equals(parser.getName()));
+                    && !"shapes".equals(parser.getName())) ;
 
             final int depth = parser.getDepth();
-            int[] radiusAttr = new int[] {R.attr.folderIconRadius};
+            int[] radiusAttr = new int[]{R.attr.folderIconRadius};
 
             while (((type = parser.next()) != XmlPullParser.END_TAG ||
                     parser.getDepth() > depth) && type != XmlPullParser.END_DOCUMENT) {
@@ -465,5 +476,65 @@ public abstract class IconShape {
 
         // Initialize shape properties
         sNormalizationScale = IconNormalizer.normalizeAdaptiveIcon(drawable, size, null);
+    }
+
+    // Marco:
+    public static final class BitmapShape extends IconShape {
+        private Bitmap mBackground;
+
+        public BitmapShape(Bitmap background) {
+            mBackground = background;
+        }
+
+        @Override
+        public void drawShape(Canvas canvas, float offsetX, float offsetY, float radius, Paint paint) {
+            canvas.drawBitmap(mBackground, offsetX, offsetY, paint);
+        }
+
+        @Override
+        public void addToPath(Path path, float offsetX, float offsetY, float radius) {
+        }
+
+        @Override
+        public <T extends View & ClipPathView> Animator createRevealAnimator(T target, Rect startRect, Rect endRect, float endRadius, boolean isReversed) {
+            return null;
+        }
+
+        public void setBackground(Bitmap background) {
+            this.mBackground = background;
+        }
+    }
+
+    // Marco: 添加 folder 背景形状类型
+    public static class FolderShape extends SimpleRectShape {
+        /**
+         * Ratio of corner radius to half size.
+         */
+        private final float mRadiusRatio;
+        private final float mIconRadius;
+        public FolderShape(float radiusRatio, float radius) {
+            mRadiusRatio = radiusRatio;
+            mIconRadius = radius;
+        }
+        @Override
+        public void drawShape(Canvas canvas, float offsetX, float offsetY, float radius, Paint p) {
+            //圆角方形shape绘制，修改folder_icon_radius大小，修改shape角度
+            canvas.drawRoundRect(offsetX, offsetY, radius * 2 + offsetX,
+                    radius * 2 + offsetY,
+                    mIconRadius, mIconRadius, p);
+        }
+        @Override
+        public void addToPath(Path path, float offsetX, float offsetY, float radius) {
+            float cx = radius + offsetX;
+            float cy = radius + offsetY;
+            float cr = radius * mRadiusRatio;
+            path.addRoundRect(cx - radius, cy - radius, cx + radius, cy + radius
+                    , mIconRadius, mIconRadius,
+                    Path.Direction.CW);
+        }
+        @Override
+        protected float getStartRadius(Rect startRect) {
+            return (startRect.width() / 2f) * mRadiusRatio;
+        }
     }
 }

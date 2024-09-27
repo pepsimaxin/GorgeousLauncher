@@ -17,6 +17,7 @@
 package com.android.launcher3.folder;
 
 import static com.android.launcher3.folder.ClippedFolderIconLayoutRule.ICON_OVERLAP_FACTOR;
+import static com.android.launcher3.graphics.IconShape.getFolderShape;
 import static com.android.launcher3.graphics.IconShape.getShape;
 import static com.android.launcher3.icons.GraphicsUtils.setColorAlphaBound;
 
@@ -98,8 +99,9 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
     private ObjectAnimator mStrokeAlphaAnimator;
     private ObjectAnimator mShadowAnimator;
 
-    // Marco: Customize Folder Background;
-    private int mFolderBgColor;
+    // Marco: Customize Folder;
+    private int mFolderBgColor;  // Background
+    private float mIconRadius;   // Icon Radius
 
     private static final Property<PreviewBackground, Integer> STROKE_ALPHA =
             new Property<PreviewBackground, Integer>(Integer.class, "strokeAlpha") {
@@ -169,8 +171,9 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
         // Stroke width is 1dp
         mStrokeWidth = context.getResources().getDisplayMetrics().density;
 
-        // Marco: Customize Folder Background Color
-        mFolderBgColor = context.getColor(R.color.folder_icon_background_color);
+        // Marco: Customize Folder
+        mFolderBgColor = context.getColor(R.color.gorgeous_folder_icon_bg_color);
+        mIconRadius = context.getResources().getDimension(R.dimen.gorgeous_folder_icon_radius);
 
         if (DRAW_SHADOW) {
             float radius = getScaledRadius();
@@ -244,8 +247,10 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(getBgColor());
 
-        getShape().drawShape(canvas, getOffsetX(), getOffsetY(), getScaledRadius(), mPaint);
-        drawShadow(canvas);
+        getFolderShape(mIconRadius).drawShape(canvas, getOffsetX(), getOffsetY(), getScaledRadius(), mPaint);
+
+        //getShape().drawShape(canvas, getOffsetX(), getOffsetY(), getScaledRadius(), mPaint);
+        // drawShadow(canvas);
     }
 
     public void drawShadow(Canvas canvas) {
