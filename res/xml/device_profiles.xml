@@ -132,8 +132,8 @@
             launcher:name="Large Phone"
             launcher:minWidthDps="406"
             launcher:minHeightDps="694"
-            launcher:iconImageSize="56"
-            launcher:iconTextSize="14.4"
+            launcher:iconImageSize="60"
+            launcher:iconTextSize="11"
             launcher:allAppsBorderSpace="16"
             launcher:allAppsCellHeight="104"
             launcher:canBeDefault="true" />
@@ -142,8 +142,8 @@
             launcher:name="Large Phone Split Display"
             launcher:minWidthDps="406"
             launcher:minHeightDps="694"
-            launcher:iconImageSize="56"
-            launcher:iconTextSize="14.4"
+            launcher:iconImageSize="60"
+            launcher:iconTextSize="11"
             launcher:allAppsBorderSpace="16"
             launcher:allAppsCellHeight="104"
             launcher:canBeDefault="true" />
@@ -153,7 +153,7 @@
             launcher:minWidthDps="255"
             launcher:minHeightDps="400"
             launcher:iconImageSize="48"
-            launcher:iconTextSize="13.0"
+            launcher:iconTextSize="10"
             launcher:allAppsBorderSpace="16"
             launcher:allAppsCellHeight="104"
             launcher:canBeDefault="true" />

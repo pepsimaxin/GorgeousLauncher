@@ -51,6 +51,7 @@ import com.android.launcher3.views.ActivityContext;
  * information, handles drawing, and animation (accept state <--> rest state).
  */
 public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
+    public static final String TAG = "PreviewBackground       ";
 
     private static final boolean DRAW_SHADOW = false;
     private static final boolean DRAW_STROKE = false;
