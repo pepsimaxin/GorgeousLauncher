@@ -101,7 +101,7 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
 
     // Marco: Customize Folder;
     private int mFolderBgColor;  // Background
-    private float mIconRadius;   // Icon Radius
+    private float mFolderIconRadius;   // Icon Radius
 
     private static final Property<PreviewBackground, Integer> STROKE_ALPHA =
             new Property<PreviewBackground, Integer>(Integer.class, "strokeAlpha") {
@@ -173,7 +173,7 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
 
         // Marco: Customize Folder
         mFolderBgColor = context.getColor(R.color.gorgeous_folder_icon_bg_color);
-        mIconRadius = context.getResources().getDimension(R.dimen.gorgeous_folder_icon_radius);
+        mFolderIconRadius = context.getResources().getDimension(R.dimen.gorgeous_folder_icon_radius);
 
         if (DRAW_SHADOW) {
             float radius = getScaledRadius();
@@ -247,7 +247,8 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(getBgColor());
 
-        getFolderShape(mIconRadius).drawShape(canvas, getOffsetX(), getOffsetY(), getScaledRadius(), mPaint);
+        getFolderShape(mFolderIconRadius)
+                .drawShape(canvas, getOffsetX(), getOffsetY(), getScaledRadius(), mPaint);
 
         //getShape().drawShape(canvas, getOffsetX(), getOffsetY(), getScaledRadius(), mPaint);
         // drawShadow(canvas);

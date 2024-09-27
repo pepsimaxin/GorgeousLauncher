@@ -47,6 +47,7 @@ import com.android.launcher3.anim.RoundedRectRevealOutlineProvider;
 import com.android.launcher3.icons.GraphicsUtils;
 import com.android.launcher3.icons.IconNormalizer;
 import com.android.launcher3.views.ClipPathView;
+import com.gorgeous.launcher3.util.LogUtils;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -70,9 +71,9 @@ public abstract class IconShape {
     }
 
     // Marco: 添加 folder 背景形状
-    public static IconShape getFolderShape(float radius) {
+    public static IconShape getFolderShape(float folderIconRadius) {
         if (fInstance == null || fInstance instanceof BitmapShape) {
-            fInstance = new FolderShape(1, radius);
+            fInstance = new FolderShape(1, folderIconRadius);
         }
         return fInstance;
     }
@@ -95,6 +96,7 @@ public abstract class IconShape {
 
     /**
      * Abstract shape where the reveal animation is a derivative of a round rect animation
+     * 抽象形状，其中显示动画是圆形矩形动画的衍生
      */
     private static abstract class SimpleRectShape extends IconShape {
 
@@ -478,7 +480,7 @@ public abstract class IconShape {
         sNormalizationScale = IconNormalizer.normalizeAdaptiveIcon(drawable, size, null);
     }
 
-    // Marco:
+    // TODO: Marco
     public static final class BitmapShape extends IconShape {
         private Bitmap mBackground;
 
@@ -511,27 +513,30 @@ public abstract class IconShape {
          * Ratio of corner radius to half size.
          */
         private final float mRadiusRatio;
-        private final float mIconRadius;
-        public FolderShape(float radiusRatio, float radius) {
+        private final float mFolderIconRadius;
+
+        public FolderShape(float radiusRatio, float folderIconRadius) {
             mRadiusRatio = radiusRatio;
-            mIconRadius = radius;
+            mFolderIconRadius = folderIconRadius;
         }
+
         @Override
         public void drawShape(Canvas canvas, float offsetX, float offsetY, float radius, Paint p) {
-            //圆角方形shape绘制，修改folder_icon_radius大小，修改shape角度
-            canvas.drawRoundRect(offsetX, offsetY, radius * 2 + offsetX,
-                    radius * 2 + offsetY,
-                    mIconRadius, mIconRadius, p);
+            // 调用 Canvas 类的 drawRoundRect() 方法，绘制一个圆角矩形
+            float cx = radius + offsetX;
+            float cy = radius + offsetY;
+            canvas.drawRoundRect(cx - radius, cy - radius, cx + radius, cy + radius,
+                    mFolderIconRadius, mFolderIconRadius, p);
         }
+
         @Override
         public void addToPath(Path path, float offsetX, float offsetY, float radius) {
             float cx = radius + offsetX;
             float cy = radius + offsetY;
-            float cr = radius * mRadiusRatio;
-            path.addRoundRect(cx - radius, cy - radius, cx + radius, cy + radius
-                    , mIconRadius, mIconRadius,
-                    Path.Direction.CW);
+            path.addRoundRect(cx - radius, cy - radius, cx + radius, cy + radius,
+                    mFolderIconRadius, mFolderIconRadius, Path.Direction.CW);
         }
+
         @Override
         protected float getStartRadius(Rect startRect) {
             return (startRect.width() / 2f) * mRadiusRatio;
