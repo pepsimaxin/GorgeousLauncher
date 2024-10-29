@@ -2,7 +2,7 @@ package com.android.launcher3.folder;
 
 public class ClippedFolderIconLayoutRule {
     // 文件夹预览中最多/最少显示的应用数量
-    public static final int MAX_NUM_ITEMS_IN_PREVIEW = 9/*4*/;
+    public static final int MAX_NUM_ITEMS_IN_PREVIEW = 4;
     private static final int MIN_NUM_ITEMS_IN_PREVIEW = 2;
 
     // 文件夹预览中图标的最小和最大缩放比例
