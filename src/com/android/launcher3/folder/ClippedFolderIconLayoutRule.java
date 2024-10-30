@@ -1,5 +1,7 @@
 package com.android.launcher3.folder;
 
+import com.gorgeous.launcher3.util.LogUtils;
+
 public class ClippedFolderIconLayoutRule {
     // 文件夹预览中最多/最少显示的应用数量
     public static final int MAX_NUM_ITEMS_IN_PREVIEW = 4;
@@ -49,6 +51,8 @@ public class ClippedFolderIconLayoutRule {
      */
     public PreviewItemDrawingParams computePreviewItemDrawingParams(int index, int curNumItems,
             PreviewItemDrawingParams params) {
+//        LogUtils.d("@@@ Marco", "computePreviewItemDrawingParams -- index = " + index + ", curNumItems = " + curNumItems
+//                    + ", params = " + params);
         // 根据当前文件夹中图标的数量，调用 scaleForItem 方法来获取每个图标的缩放比例，文件夹中的图标数量会影响图标的最终大小
         float totalScale = scaleForItem(curNumItems);
         float transX;  // 用来存储图标的平移位置
@@ -56,18 +60,23 @@ public class ClippedFolderIconLayoutRule {
 
         // 如果当前的图标索引等于 EXIT_INDEX，表示图标即将退出预览状态，将图标放置在固定位置
         if (index == EXIT_INDEX) {
+            LogUtils.d("@@@ Marco", "index -- 01");
             // 0 1 * <-- Exit position (row 0, col 2)
             // 2 3
             getGridPosition(0, 2, mTmpPoint);  // 计算图标的网格布局位置
         } else if (index == ENTER_INDEX) {    // 如果索引等于 ENTER_INDEX，表示图标正在进入预览状态
+            LogUtils.d("@@@ Marco", "index -- 02");
             // 0 1
             // 2 3 * <-- Enter position (row 1, col 2)
             getGridPosition(1, 2, mTmpPoint);  // 计算该图标的位置
         } else if (index >= MAX_NUM_ITEMS_IN_PREVIEW) {  // 如果图标的索引大于最大预览数量（这里是 4），该图标将被置于文件夹中心（mAvailableSpace / 2 表示中心位置）
+            LogUtils.d("@@@ Marco", "index -- 03");
             // Items beyond those displayed in the preview are animated to the center
             mTmpPoint[0] = mTmpPoint[1] = mAvailableSpace / 2 - (mIconSize * totalScale) / 2;
         } else {
             // 计算该索引的图标在当前图标总数中的准确位置
+            LogUtils.d("@@@ Marco", "index = " + index + ", curNumItems = " + curNumItems
+                    + ", mTmpPoint[0] = " + mTmpPoint[0] + ", mTmpPoint[1] = " + mTmpPoint[1]);
             getPosition(index, curNumItems, mTmpPoint);
         }
 
@@ -94,12 +103,14 @@ public class ClippedFolderIconLayoutRule {
      *                        2 3  // 3 is row 1, col 1
      */
     private void getGridPosition(int row, int col, float[] result) {
+        LogUtils.d("@@@ Marco", "getGridPosition()");
         // We use position 0 and 3 to calculate the x and y distances between items.
         // 通过调用 getPosition 方法，获取第一个图标（位置 0）的坐标，将其存入 result 数组中。这个坐标用于后续的基准位置计算。
         getPosition(0, 4, result);
         // 分别将计算得到的 result 坐标存入 left 和 top，用于之后计算网格的位置。
         float left = result[0];
         float top = result[1];
+        LogUtils.d("@@@ Marco", "left = " + left + ", top = " + top);
 
         // 获取网格中最后一个图标（位置 3）的坐标，这个值用于计算图标之间的 x 和 y 轴上的距离。
         getPosition(3, 4, result);
@@ -114,7 +125,7 @@ public class ClippedFolderIconLayoutRule {
 
     // 根据图标的索引 index 和当前图标总数 curNumItems 计算图标在圆形布局中的位置
     private void getPosition(int index, int curNumItems, float[] result) {
-        // The case of two items is homomorphic to the case of one.
+        // 确保当前显示的图标数量至少为 2
         curNumItems = Math.max(curNumItems, 2);
 
         // We model the preview as a circle of items starting in the appropriate piece of the

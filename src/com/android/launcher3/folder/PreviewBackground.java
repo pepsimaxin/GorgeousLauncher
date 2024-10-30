@@ -236,7 +236,7 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
     }
 
     public int getBgColor() {
-        return mFolderBgColor/*mBgColor*/;
+        return /*mFolderBgColor*/mBgColor;
     }
 
     public int getDotColor() {
@@ -247,11 +247,12 @@ public class PreviewBackground extends CellLayout.DelegatedCellDrawing {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(getBgColor());
 
-        getFolderShape(mFolderIconRadius)
-                .drawShape(canvas, getOffsetX(), getOffsetY(), getScaledRadius(), mPaint);
+        // Folder 背景
+//        getFolderShape(mFolderIconRadius)
+//                .drawShape(canvas, getOffsetX(), getOffsetY(), getScaledRadius(), mPaint);
 
-        //getShape().drawShape(canvas, getOffsetX(), getOffsetY(), getScaledRadius(), mPaint);
-        // drawShadow(canvas);
+        getShape().drawShape(canvas, getOffsetX(), getOffsetY(), getScaledRadius(), mPaint);
+         drawShadow(canvas);
     }
 
     public void drawShadow(Canvas canvas) {
